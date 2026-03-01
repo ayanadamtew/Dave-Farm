@@ -4,11 +4,11 @@ from sqlalchemy.future import select
 from datetime import timedelta
 import logging
 
-from ...core.database import get_db
-from ...core.security import verify_password, get_password_hash, create_access_token
-from ...core.config import settings
-from ...models.domain import User
-from ...schemas.dto import UserCreate, UserLogin, Token
+from app.core.database import get_db
+from app.core.security import verify_password, get_password_hash, create_access_token
+from app.core.config import settings
+from app.models.domain import User
+from app.schemas.dto import UserCreate, UserLogin, Token
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

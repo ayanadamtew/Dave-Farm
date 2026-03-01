@@ -1,5 +1,5 @@
 fastapi
-uvicorn[standard]
+uvicorn
 sqlalchemy
 asyncpg
 psycopg2-binary
@@ -8,3 +8,4 @@ pydantic
 pydantic-settings
 pyjwt
 passlib[bcrypt]
+email-validator

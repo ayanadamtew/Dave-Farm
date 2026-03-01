@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from .core.config import settings
-from .core.database import engine, Base
-from .api.router import api_router
-from .models import domain # Ensure models are loaded
+from app.core.config import settings
+from app.core.database import engine, Base
+from app.api.router import api_router
+from app.models import domain # Ensure models are loaded
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
