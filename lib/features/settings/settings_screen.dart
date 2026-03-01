@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/auth/auth_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../auth/login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -33,7 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (confirm == true && mounted) {
-      await AuthService.instance.logout();
+      const storage = FlutterSecureStorage();
+      await storage.delete(key: 'dave_farm_jwt');
+      
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
