@@ -1,0 +1,58 @@
+name: dave_farm
+description: "Dave Farm — Offline-first poultry farm management app."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Local database
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+
+  # Secure storage for JWT and PIN
+  flutter_secure_storage: ^9.2.4
+
+  # UUID generation
+  uuid: ^4.5.1
+
+  # Network connectivity listener
+  connectivity_plus: ^6.1.4
+
+  # Charts
+  fl_chart: ^0.70.2
+
+  # PDF generation
+  pdf: ^3.11.2
+  printing: ^5.14.2
+
+  # File system access
+  path_provider: ^2.1.5
+
+  # HTTP client for sync engine
+  http: ^1.2.2
+
+  # Date formatting + l10n
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  generate: true
+
+  assets:
+    - assets/images/
