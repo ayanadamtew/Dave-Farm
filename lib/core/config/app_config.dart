@@ -8,5 +8,5 @@ class AppConfig {
   /// 
   /// For production:
   /// - 'https://api.yourdomain.com'
-  static const String baseUrl = 'http://10.0.2.2:8000'; // Defaulting to Android Emulator
+  static const String baseUrl = 'http://10.22.75.125:8000'; // Set to Local PC IP for Physical Device
 }
