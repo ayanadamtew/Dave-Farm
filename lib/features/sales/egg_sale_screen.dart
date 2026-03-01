@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/models/egg_sale.dart';
 import '../../shared/widgets/shared_widgets.dart';
+import 'package:intl/intl.dart';
 
 class EggSaleScreen extends StatefulWidget {
   const EggSaleScreen({super.key});
@@ -19,12 +20,25 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
 
   DateTime _selectedDate = DateTime.now();
   bool _isSaving = false;
+  
+  List<EggSale> _sales = [];
 
   @override
   void initState() {
     super.initState();
     _quantityCtrl.addListener(_recalcTotal);
     _unitPriceCtrl.addListener(_recalcTotal);
+    _loadSales();
+  }
+  
+  Future<void> _loadSales() async {
+    final sales = await DatabaseHelper.instance.getAllEggSales();
+    if (mounted) {
+      setState(() {
+        _sales = sales;
+        _sales.sort((a, b) => b.date.compareTo(a.date));
+      });
+    }
   }
 
   void _recalcTotal() {
@@ -53,6 +67,8 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
         const SnackBar(content: Text('Sale recorded!')),
       );
       _resetForm();
+      Navigator.pop(context);
+      _loadSales();
     }
   }
 
@@ -72,113 +88,236 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
     _totalCtrl.dispose();
     super.dispose();
   }
+  
+  void _openAddSaleSheet() {
+    _resetForm();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              left: 16,
+              right: 16,
+              top: 24,
+            ),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'New Egg Sale',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const _SectionLabel('Customer'),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _customerCtrl,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        labelText: 'Customer Name',
+                        prefixIcon: Icon(Icons.person_rounded),
+                      ),
+                      validator: (v) =>
+                          (v == null || v.trim().isEmpty) ? 'Required' : null,
+                    ),
+                    const SizedBox(height: 20),
+      
+                    const _SectionLabel('Date'),
+                    DatePickerTile(
+                      label: 'Sale Date',
+                      date: _selectedDate,
+                      onChanged: (d) => setSheetState(() => _selectedDate = d),
+                    ),
+                    const Divider(height: 32),
+      
+                    const _SectionLabel('Sale Details'),
+                    const SizedBox(height: 12),
+                    NumpadField(
+                      label: 'Quantity (eggs)',
+                      controller: _quantityCtrl,
+                      prefixIcon: Icons.egg_rounded,
+                    ),
+                    const SizedBox(height: 16),
+                    DecimalField(
+                      label: 'Unit Price',
+                      controller: _unitPriceCtrl,
+                      prefixText: 'ETB ',
+                    ),
+                    const SizedBox(height: 16),
+      
+                    // Auto-calculated total
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2E7D32).withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: const Color(0xFF2E7D32).withOpacity(0.4),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('TOTAL',
+                                  style: TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 11,
+                                      letterSpacing: 1)),
+                              Text('Auto-calculated',
+                                  style: TextStyle(
+                                      color: Colors.white38, fontSize: 10)),
+                            ],
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: _totalCtrl,
+                            builder: (_, v, __) => Text(
+                              'ETB ${_totalCtrl.text}',
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF66BB6A),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+      
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        onPressed: _isSaving ? null : () {
+                          setSheetState(() => _isSaving = true);
+                          _save().whenComplete(() {
+                            if (mounted) setSheetState(() => _isSaving = false);
+                          });
+                        },
+                        icon: _isSaving
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2, color: Colors.white),
+                              )
+                            : const Icon(Icons.sell_rounded),
+                        label: Text(_isSaving ? 'Saving…' : 'Record Sale'),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Egg Sale')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _SectionLabel('Customer'),
-              const SizedBox(height: 8),
-              TextFormField(
-                controller: _customerCtrl,
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Customer Name',
-                  prefixIcon: Icon(Icons.person_rounded),
+      appBar: AppBar(title: const Text('Sales')),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _openAddSaleSheet,
+        icon: const Icon(Icons.add_rounded),
+        label: const Text('Add Sale'),
+      ),
+      body: _sales.isEmpty
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.point_of_sale_rounded, size: 80, color: Colors.grey.withOpacity(0.5)),
+                const SizedBox(height: 16),
+                Text(
+                  'No Sales Found',
+                  style: TextStyle(color: Colors.grey.shade400, fontSize: 18),
                 ),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Required' : null,
-              ),
-              const SizedBox(height: 20),
-
-              _SectionLabel('Date'),
-              DatePickerTile(
-                label: 'Sale Date',
-                date: _selectedDate,
-                onChanged: (d) => setState(() => _selectedDate = d),
-              ),
-              const Divider(height: 32),
-
-              _SectionLabel('Sale Details'),
-              const SizedBox(height: 12),
-              NumpadField(
-                label: 'Quantity (eggs)',
-                controller: _quantityCtrl,
-                prefixIcon: Icons.egg_rounded,
-              ),
-              const SizedBox(height: 16),
-              DecimalField(
-                label: 'Unit Price',
-                controller: _unitPriceCtrl,
-                prefixText: 'ETB ',
-              ),
-              const SizedBox(height: 16),
-
-              // Auto-calculated total
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2E7D32).withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: const Color(0xFF2E7D32).withOpacity(0.4),
+                const SizedBox(height: 8),
+                Text(
+                  'Tap + to record an egg sale',
+                  style: TextStyle(color: Colors.grey.shade500),
+                ),
+              ],
+            ),
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            itemCount: _sales.length,
+            itemBuilder: (context, index) {
+              final sale = _sales[index];
+              return Card(
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              sale.customerName ?? 'Unknown Customer',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(
+                            DateFormat('MMM d, yyyy').format(sale.date),
+                            style: TextStyle(color: Colors.grey.shade400, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.egg_rounded, size: 16, color: Colors.green),
+                              const SizedBox(width: 6),
+                              Text('${sale.quantity} eggs @ ${sale.unitPrice}'),
+                            ],
+                          ),
+                          Text(
+                            'ETB ${sale.totalPrice.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              color: Color(0xFF66BB6A),
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('TOTAL',
-                            style: TextStyle(
-                                color: Colors.white54,
-                                fontSize: 11,
-                                letterSpacing: 1)),
-                        Text('Auto-calculated',
-                            style: TextStyle(
-                                color: Colors.white38, fontSize: 10)),
-                      ],
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: _totalCtrl,
-                      builder: (_, v, __) => Text(
-                        'ETB ${_totalCtrl.text}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF66BB6A),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-
-              ElevatedButton.icon(
-                onPressed: _isSaving ? null : _save,
-                icon: _isSaving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(Icons.sell_rounded),
-                label: Text(_isSaving ? 'Saving…' : 'Record Sale'),
-              ),
-            ],
+              );
+            },
           ),
-        ),
-      ),
     );
   }
 }

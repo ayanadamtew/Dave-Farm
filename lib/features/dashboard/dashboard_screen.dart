@@ -8,6 +8,7 @@ import '../flocks/flocks_screen.dart';
 import '../logs/daily_log_screen.dart';
 import '../reports/report_screen.dart';
 import '../sales/egg_sale_screen.dart';
+import '../settings/settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -148,6 +149,16 @@ class _HomeTabState extends State<_HomeTab> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Sync complete')));
               }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
             },
           ),
         ],
