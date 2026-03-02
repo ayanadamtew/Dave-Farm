@@ -2,7 +2,15 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from sqlalchemy.orm import declarative_base
 from app.core.config import settings
 
-engine = create_async_engine(settings.DATABASE_URL, echo=False)
+# Handle Render's ?sslmode=require which asyncpg doesn't like
+db_url = settings.DATABASE_URL
+connect_args = {}
+
+if "sslmode=require" in db_url:
+    db_url = db_url.replace("?sslmode=require", "").replace("&sslmode=require", "")
+    connect_args["ssl"] = True
+
+engine = create_async_engine(db_url, echo=False, connect_args=connect_args)
 AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 Base = declarative_base()
