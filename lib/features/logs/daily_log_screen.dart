@@ -26,7 +26,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   bool _isSaving = false;
   
   List<DailyLog> _logs = [];
-  Map<String, String> _flockNames = {};
 
   @override
   void initState() {
@@ -47,7 +46,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       setState(() {
         _flocks = flocks;
         _logs = logs;
-        _flockNames = names;
         // Sort logs descending by date
         _logs.sort((a, b) => b.date.compareTo(a.date));
       });
@@ -311,125 +309,90 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             itemCount: _logs.length,
             itemBuilder: (context, index) {
               final log = _logs[index];
-              final flockName = _flockNames[log.flockId] ?? 'Unknown Flock';
               final totalEggs = log.goodEggs + log.brokenEggs + log.damagedEggs;
               
               return Card(
-                margin: const EdgeInsets.only(bottom: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                margin: const EdgeInsets.only(bottom: 8),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 elevation: 0,
                 color: Theme.of(context).cardColor.withOpacity(0.5),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withOpacity(0.1)),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.white.withOpacity(0.05),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            DateFormat('MMM d, yyyy (EEEE)').format(log.date),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
+                                Icon(Icons.egg_rounded, size: 12, color: Theme.of(context).primaryColor),
+                                const SizedBox(width: 4),
                                 Text(
-                                  flockName,
-                                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  DateFormat('EEEE, MMM d, yyyy').format(log.date),
-                                  style: TextStyle(color: Colors.white38, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.egg_rounded, size: 14, color: Theme.of(context).primaryColor),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    '$totalEggs ${AppLocalizations.of(context)!.labelTotal}',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          child: Divider(height: 1, thickness: 0.5, color: Colors.white10),
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _LogStatItem(
-                                    label: AppLocalizations.of(context)!.labelGood,
-                                    value: '${log.goodEggs}',
-                                    icon: Icons.check_circle_outline_rounded,
-                                    color: Colors.greenAccent,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _LogStatItem(
-                                    label: AppLocalizations.of(context)!.labelBroken,
-                                    value: '${log.brokenEggs}',
-                                    icon: Icons.egg_alt_rounded,
-                                    color: Colors.orangeAccent,
+                                  '$totalEggs',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _LogStatItem(
-                                    label: AppLocalizations.of(context)!.labelDamaged,
-                                    value: '${log.damagedEggs}',
-                                    icon: Icons.heart_broken_rounded,
-                                    color: Colors.deepOrangeAccent,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _LogStatItem(
-                                    label: AppLocalizations.of(context)!.labelDead,
-                                    value: '${log.deadBirds}',
-                                    icon: Icons.warning_amber_rounded,
-                                    color: log.deadBirds > 0 ? Colors.redAccent : Colors.white24,
-                                  ),
-                                ),
-                              ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _LogStatItem(
+                              label: AppLocalizations.of(context)!.labelGood,
+                              value: '${log.goodEggs}',
+                              color: Colors.greenAccent,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: _LogStatItem(
+                              label: AppLocalizations.of(context)!.labelBroken,
+                              value: '${log.brokenEggs}',
+                              color: Colors.orangeAccent,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: _LogStatItem(
+                              label: AppLocalizations.of(context)!.labelDamaged,
+                              value: '${log.damagedEggs}',
+                              color: Colors.deepOrangeAccent,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: _LogStatItem(
+                              label: AppLocalizations.of(context)!.labelDead,
+                              value: '${log.deadBirds}',
+                              color: log.deadBirds > 0 ? Colors.redAccent : Colors.white24,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -443,48 +406,38 @@ class _LogStatItem extends StatelessWidget {
   const _LogStatItem({
     required this.label,
     required this.value,
-    required this.icon,
     required this.color,
   });
 
   final String label;
   final String value;
-  final IconData icon;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color.withOpacity(0.1)),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 12, color: color),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: color.withOpacity(0.7),
-                  letterSpacing: 0.2,
-                ),
-              ),
-            ],
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w600,
+              color: color.withOpacity(0.75),
+            ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             value,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w800,
               color: color,
             ),

@@ -39,6 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (confirm == true && mounted) {
       const storage = FlutterSecureStorage();
       await storage.delete(key: 'dave_farm_jwt');
+      await storage.delete(key: 'dave_farm_offline');
       
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
@@ -174,6 +175,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 },
               ),
+            ),
+            const Divider(height: 32),
+            
+            // --- Developer Section ---
+            _SectionHeader(l10n.sectionDeveloper),
+            const ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.white12,
+                child: Icon(Icons.code_rounded, color: Colors.purpleAccent),
+              ),
+              title: Text('Ayana Damtew'),
+              subtitle: Text('Developer'),
+            ),
+            const ListTile(
+              leading: Icon(Icons.email_outlined, size: 20, color: Colors.white38),
+              title: Text('ayanadamtew@gmail.com', style: TextStyle(fontSize: 14)),
+              dense: true,
+            ),
+            const ListTile(
+              leading: Icon(Icons.phone_outlined, size: 20, color: Colors.white38),
+              title: Text('0973395537', style: TextStyle(fontSize: 14)),
+              dense: true,
             ),
             const Divider(height: 32),
 

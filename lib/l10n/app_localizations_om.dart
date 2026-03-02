@@ -231,6 +231,9 @@ class AppLocalizationsOm extends AppLocalizations {
   String get sectionPreferences => 'Filannoowwan';
 
   @override
+  String get sectionDeveloper => 'Gulaalaa';
+
+  @override
   String get sectionDangerZone => 'Naannoo Balaa';
 
   @override
@@ -266,6 +269,12 @@ class AppLocalizationsOm extends AppLocalizations {
 
   @override
   String get labelSyncNow => 'Amma Wixinee';
+
+  @override
+  String get labelLast30Days => 'Maamiltoota Guyyaa 30';
+
+  @override
+  String get labelTotalProduction => 'Oomisha Waliigalaa';
 
   @override
   String get msgSyncComplete => 'Wixineen xumurameera';

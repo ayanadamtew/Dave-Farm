@@ -544,6 +544,12 @@ abstract class AppLocalizations {
   /// **'Preferences'**
   String get sectionPreferences;
 
+  /// No description provided for @sectionDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer'**
+  String get sectionDeveloper;
+
   /// No description provided for @sectionDangerZone.
   ///
   /// In en, this message translates to:
@@ -615,6 +621,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync Now'**
   String get labelSyncNow;
+
+  /// No description provided for @labelLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days Summary'**
+  String get labelLast30Days;
+
+  /// No description provided for @labelTotalProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Production'**
+  String get labelTotalProduction;
 
   /// No description provided for @msgSyncComplete.
   ///

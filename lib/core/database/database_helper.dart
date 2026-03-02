@@ -42,8 +42,17 @@ class DatabaseHelper {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      await db.execute(
-          'ALTER TABLE $tableDailyLogs ADD COLUMN damaged_eggs INTEGER NOT NULL DEFAULT 0');
+      // Check if column exists first to avoid "duplicate column" error
+      // This can happen if a user got a version where damaged_eggs was in onCreate
+      // but the db version wasn't incremented yet.
+      final List<Map<String, dynamic>> columns = 
+          await db.rawQuery('PRAGMA table_info($tableDailyLogs)');
+      final bool hasDamagedEggs = columns.any((c) => c['name'] == 'damaged_eggs');
+      
+      if (!hasDamagedEggs) {
+        await db.execute(
+            'ALTER TABLE $tableDailyLogs ADD COLUMN damaged_eggs INTEGER NOT NULL DEFAULT 0');
+      }
     }
   }
 
@@ -405,6 +414,61 @@ class DatabaseHelper {
     final sales = (salesResult.first['total'] as num).toDouble();
     final expenses = (expensesResult.first['total'] as num).toDouble();
     return sales - expenses;
+  }
+
+  /// Total Sales = SUM(egg_sales.total_price) for the given date range.
+  Future<double> getTotalSales(DateTime start, DateTime end) async {
+    final db = await database;
+    final startStr = start.toIso8601String();
+    final endStr = end.toIso8601String();
+    final result = await db.rawQuery(
+        'SELECT COALESCE(SUM(total_price), 0) as total FROM $tableEggSales WHERE date >= ? AND date <= ?',
+        [startStr, endStr]);
+    return (result.first['total'] as num).toDouble();
+  }
+
+  /// Total Expenses = SUM(expenses.amount) for the given date range.
+  Future<double> getTotalExpenses(DateTime start, DateTime end) async {
+    final db = await database;
+    final startStr = start.toIso8601String();
+    final endStr = end.toIso8601String();
+    final result = await db.rawQuery(
+        'SELECT COALESCE(SUM(amount), 0) as total FROM $tableExpenses WHERE date >= ? AND date <= ?',
+        [startStr, endStr]);
+    return (result.first['total'] as num).toDouble();
+  }
+
+  /// Total mortality count for the given date range.
+  Future<int> getMortalityCount(DateTime start, DateTime end) async {
+    final db = await database;
+    final startStr = start.toIso8601String();
+    final endStr = end.toIso8601String();
+    final result = await db.rawQuery(
+        'SELECT COALESCE(SUM(dead_birds), 0) as total FROM $tableDailyLogs WHERE date >= ? AND date <= ?',
+        [startStr, endStr]);
+    return (result.first['total'] as num).toInt();
+  }
+
+  /// Detailed egg breakdown for the given date range.
+  Future<Map<String, int>> getEggBreakdown(DateTime start, DateTime end) async {
+    final db = await database;
+    final startStr = start.toIso8601String();
+    final endStr = end.toIso8601String();
+    final result = await db.rawQuery('''
+      SELECT 
+        COALESCE(SUM(good_eggs), 0) as good,
+        COALESCE(SUM(broken_eggs), 0) as broken,
+        COALESCE(SUM(damaged_eggs), 0) as damaged
+      FROM $tableDailyLogs
+      WHERE date >= ? AND date <= ?
+    ''', [startStr, endStr]);
+    
+    final row = result.first;
+    return {
+      'good': (row['good'] as num).toInt(),
+      'broken': (row['broken'] as num).toInt(),
+      'damaged': (row['damaged'] as num).toInt(),
+    };
   }
 
   /// Cost per egg = SUM(expenses) / SUM(good_eggs) for the given period.

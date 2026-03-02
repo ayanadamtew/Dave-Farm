@@ -231,6 +231,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sectionPreferences => 'Preferences';
 
   @override
+  String get sectionDeveloper => 'Developer';
+
+  @override
   String get sectionDangerZone => 'Danger Zone';
 
   @override
@@ -265,6 +268,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labelSyncNow => 'Sync Now';
+
+  @override
+  String get labelLast30Days => 'Last 30 Days Summary';
+
+  @override
+  String get labelTotalProduction => 'Total Production';
 
   @override
   String get msgSyncComplete => 'Sync complete';

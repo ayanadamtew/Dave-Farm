@@ -231,6 +231,9 @@ class AppLocalizationsAm extends AppLocalizations {
   String get sectionPreferences => 'ምርጫዎች';
 
   @override
+  String get sectionDeveloper => 'ገንቢ';
+
+  @override
   String get sectionDangerZone => 'አደገኛ ቀጠና';
 
   @override
@@ -265,6 +268,12 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get labelSyncNow => 'አሁን አመሳስል';
+
+  @override
+  String get labelLast30Days => 'ያለፉት 30 ቀናት ማጠቃለያ';
+
+  @override
+  String get labelTotalProduction => 'ጠቅላላ ምርት';
 
   @override
   String get msgSyncComplete => 'ማመሳሰል ተጠናቅቋል';

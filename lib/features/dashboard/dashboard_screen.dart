@@ -102,6 +102,14 @@ class _HomeTabState extends State<_HomeTab> {
   double _costPerEgg = 0;
   double _netProfit = 0;
 
+  // New 30-day metrics
+  int _totalEggsGood30 = 0;
+  int _totalEggsBroken30 = 0;
+  int _totalEggsDamaged30 = 0;
+  double _totalSales30 = 0;
+  double _totalExpenses30 = 0;
+  int _mortalityCount30 = 0;
+
   // Chart data
   List<Map<String, dynamic>> _eggTrend = [];
   List<Map<String, dynamic>> _profitTrend = [];
@@ -125,9 +133,14 @@ class _HomeTabState extends State<_HomeTab> {
       db.getCostPerEgg(start30, now),
       db.getLast30DaysEggTotals(),
       db.getLast30DaysNetProfit(),
+      db.getEggBreakdown(start30, now),
+      db.getTotalSales(start30, now),
+      db.getTotalExpenses(start30, now),
+      db.getMortalityCount(start30, now),
     ]);
 
     if (mounted) {
+      final breakdown = results[6] as Map<String, int>;
       setState(() {
         _todayEggs = results[0] as int;
         _totalBirds = results[1] as int;
@@ -135,6 +148,12 @@ class _HomeTabState extends State<_HomeTab> {
         _costPerEgg = (results[3] as num).toDouble();
         _eggTrend = results[4] as List<Map<String, dynamic>>;
         _profitTrend = results[5] as List<Map<String, dynamic>>;
+        _totalEggsGood30 = breakdown['good']!;
+        _totalEggsBroken30 = breakdown['broken']!;
+        _totalEggsDamaged30 = breakdown['damaged']!;
+        _totalSales30 = (results[7] as num).toDouble();
+        _totalExpenses30 = (results[8] as num).toDouble();
+        _mortalityCount30 = results[9] as int;
         _layingPct = _totalBirds > 0 ? (_todayEggs / _totalBirds * 100) : 0;
         _loading = false;
       });
@@ -229,6 +248,76 @@ class _HomeTabState extends State<_HomeTab> {
                     value: '$_totalBirds',
                     icon: Icons.pets_rounded,
                     color: Colors.white70,
+                  ),
+                  const SizedBox(height: 16),
+
+                  _SectionHeader(AppLocalizations.of(context)!.labelLast30Days),
+                  
+                  // Financial Summary row
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _SmallMetricCard(
+                            label: AppLocalizations.of(context)!.labelTotalSales,
+                            value: 'ETB ${_totalSales30.toStringAsFixed(0)}',
+                            color: const Color(0xFF43A047),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _SmallMetricCard(
+                            label: AppLocalizations.of(context)!.labelTotalExpenses,
+                            value: 'ETB ${_totalExpenses30.toStringAsFixed(0)}',
+                            color: Colors.orangeAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Production Breakdown card
+                  Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.labelTotalProduction,
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _BreakdownItem(
+                                label: AppLocalizations.of(context)!.labelGood,
+                                value: _totalEggsGood30,
+                                color: Colors.greenAccent,
+                              ),
+                              _BreakdownItem(
+                                label: AppLocalizations.of(context)!.labelBroken,
+                                value: _totalEggsBroken30,
+                                color: Colors.orangeAccent,
+                              ),
+                              _BreakdownItem(
+                                label: AppLocalizations.of(context)!.labelDamaged,
+                                value: _totalEggsDamaged30,
+                                color: Colors.deepOrangeAccent,
+                              ),
+                              _BreakdownItem(
+                                label: AppLocalizations.of(context)!.labelDead,
+                                value: _mortalityCount30,
+                                color: Colors.redAccent,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 8),
 
@@ -329,26 +418,47 @@ class _EggLineChart extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(top: 16, right: 24, bottom: 8, left: 8),
         child: SizedBox(
           height: 180,
           child: LineChart(
             LineChartData(
+              lineTouchData: LineTouchData(
+                touchTooltipData: LineTouchTooltipData(
+                  getTooltipColor: (_) => Colors.blueGrey.withOpacity(0.8),
+                  getTooltipItems: (touchedSpots) {
+                    return touchedSpots.map((s) {
+                      return LineTooltipItem(
+                        '${s.y.toInt()} eggs',
+                        const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
               minX: 0,
               maxX: (data.length - 1).toDouble(),
               minY: 0,
               maxY: maxY * 1.2,
               gridData: const FlGridData(show: false),
               borderData: FlBorderData(show: false),
-              titlesData: const FlTitlesData(
+              titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                topTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                rightTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 32,
+                    getTitlesWidget: (value, meta) {
+                      if (value == meta.max || value == meta.min) return const SizedBox();
+                      return Text(
+                        value.toInt().toString(),
+                        style: const TextStyle(color: Colors.white38, fontSize: 10),
+                      );
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                bottomTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
               lineBarsData: [
                 LineChartBarData(
@@ -403,29 +513,131 @@ class _ProfitBarChart extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(top: 16, right: 24, bottom: 8, left: 8),
         child: SizedBox(
           height: 180,
           child: BarChart(
             BarChartData(
+              barTouchData: BarTouchData(
+                touchTooltipData: BarTouchTooltipData(
+                  getTooltipColor: (_) => Colors.blueGrey.withOpacity(0.8),
+                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    final isNegative = data[groupIndex]['net_profit'] < 0;
+                    return BarTooltipItem(
+                      '${isNegative ? '-' : ''}ETB ${rod.toY.toInt()}',
+                      const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    );
+                  },
+                ),
+              ),
               maxY: maxY * 1.2,
               gridData: const FlGridData(show: false),
               borderData: FlBorderData(show: false),
-              titlesData: const FlTitlesData(
+              titlesData: FlTitlesData(
                 leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                topTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                rightTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
-                bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false)),
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      if (value == meta.max || value == meta.min) return const SizedBox();
+                      return Text(
+                        value.toInt().toString(),
+                        style: const TextStyle(color: Colors.white38, fontSize: 10),
+                      );
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                bottomTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
               barGroups: groups,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+class _SmallMetricCard extends StatelessWidget {
+  const _SmallMetricCard({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  final String label;
+  final String value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: color.withOpacity(0.7),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BreakdownItem extends StatelessWidget {
+  const _BreakdownItem({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  final String label;
+  final int value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          '$value',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: color,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            color: color.withOpacity(0.7),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 }

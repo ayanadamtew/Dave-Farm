@@ -185,13 +185,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
                     // Offline-first hint
                     OutlinedButton.icon(
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => DashboardScreen(
-                            settingsController: widget.settingsController,
-                          ),
-                        ),
-                      ),
+                      onPressed: () async {
+                        await _storage.write(key: 'dave_farm_offline', value: 'true');
+                        if (mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => DashboardScreen(
+                                settingsController: widget.settingsController,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       icon: const Icon(Icons.wifi_off_rounded,
                           color: Colors.white54),
                       label: Text(AppLocalizations.of(context)!.btnContinueOffline,

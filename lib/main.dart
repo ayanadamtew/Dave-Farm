@@ -18,6 +18,7 @@ import 'l10n/app_localizations.dart';
 const _storage = FlutterSecureStorage();
 const _jwtKey = 'dave_farm_jwt';
 const _pinKey = 'dave_farm_pin';
+const _offlineKey = 'dave_farm_offline';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,10 +86,11 @@ class _AuthGateState extends State<_AuthGate> {
   Future<void> _check() async {
     final jwt = await _storage.read(key: _jwtKey);
     final pin = await _storage.read(key: _pinKey);
+    final isOffline = await _storage.read(key: _offlineKey) == 'true';
 
     Widget dest;
-    if (jwt != null && jwt.isNotEmpty) {
-      // JWT found — user is already authenticated
+    if ((jwt != null && jwt.isNotEmpty) || isOffline) {
+      // JWT found OR user chose persistent offline — user is authenticated
       if (pin != null && pin.isNotEmpty) {
         // Show PIN screen first, then go to dashboard
         dest = PinScreen(
