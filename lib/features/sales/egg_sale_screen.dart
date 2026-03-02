@@ -3,6 +3,7 @@ import '../../core/database/database_helper.dart';
 import '../../core/models/egg_sale.dart';
 import '../../shared/widgets/shared_widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 class EggSaleScreen extends StatefulWidget {
   const EggSaleScreen({super.key});
@@ -64,7 +65,7 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
     if (mounted) {
       setState(() => _isSaving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sale recorded!')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.msgSaved)),
       );
       _resetForm();
       Navigator.pop(context);
@@ -115,44 +116,44 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'New Egg Sale',
+                      AppLocalizations.of(context)!.labelNewSale,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const _SectionLabel('Customer'),
+                    _SectionLabel(AppLocalizations.of(context)!.labelCustomer),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _customerCtrl,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(
-                        labelText: 'Customer Name',
-                        prefixIcon: Icon(Icons.person_rounded),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.fieldCustomerName,
+                        prefixIcon: const Icon(Icons.person_rounded),
                       ),
                       validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Required' : null,
+                          (v == null || v.trim().isEmpty) ? AppLocalizations.of(context)!.errRequired : null,
                     ),
                     const SizedBox(height: 20),
       
-                    const _SectionLabel('Date'),
+                    _SectionLabel(AppLocalizations.of(context)!.fieldDate),
                     DatePickerTile(
-                      label: 'Sale Date',
+                      label: AppLocalizations.of(context)!.fieldDate,
                       date: _selectedDate,
                       onChanged: (d) => setSheetState(() => _selectedDate = d),
                     ),
                     const Divider(height: 32),
       
-                    const _SectionLabel('Sale Details'),
+                    _SectionLabel(AppLocalizations.of(context)!.labelSaleDetails),
                     const SizedBox(height: 12),
                     NumpadField(
-                      label: 'Quantity (eggs)',
+                      label: AppLocalizations.of(context)!.fieldQuantity,
                       controller: _quantityCtrl,
                       prefixIcon: Icons.egg_rounded,
                     ),
                     const SizedBox(height: 16),
                     DecimalField(
-                      label: 'Unit Price',
+                      label: AppLocalizations.of(context)!.fieldUnitPrice,
                       controller: _unitPriceCtrl,
                       prefixText: 'ETB ',
                     ),
@@ -171,16 +172,16 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Column(
+                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('TOTAL',
-                                  style: TextStyle(
+                              Text(AppLocalizations.of(context)!.fieldTotalPrice.toUpperCase(),
+                                  style: const TextStyle(
                                       color: Colors.white54,
                                       fontSize: 11,
                                       letterSpacing: 1)),
-                              Text('Auto-calculated',
-                                  style: TextStyle(
+                              Text(AppLocalizations.of(context)!.labelTotalCalculated,
+                                  style: const TextStyle(
                                       color: Colors.white38, fontSize: 10)),
                             ],
                           ),
@@ -219,8 +220,8 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2, color: Colors.white),
                               )
-                            : const Icon(Icons.sell_rounded),
-                        label: Text(_isSaving ? 'Saving…' : 'Record Sale'),
+                             : const Icon(Icons.sell_rounded),
+                        label: Text(_isSaving ? AppLocalizations.of(context)!.msgSyncing : AppLocalizations.of(context)!.titleEggSale),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -237,11 +238,11 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sales')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.navSales)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openAddSaleSheet,
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Sale'),
+        label: Text(AppLocalizations.of(context)!.labelAddSale),
       ),
       body: _sales.isEmpty
         ? Center(
@@ -251,12 +252,12 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                 Icon(Icons.point_of_sale_rounded, size: 80, color: Colors.grey.withOpacity(0.5)),
                 const SizedBox(height: 16),
                 Text(
-                  'No Sales Found',
+                  AppLocalizations.of(context)!.labelEmptySales,
                   style: TextStyle(color: Colors.grey.shade400, fontSize: 18),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Tap + to record an egg sale',
+                  AppLocalizations.of(context)!.labelEmptySalesSub,
                   style: TextStyle(color: Colors.grey.shade500),
                 ),
               ],
@@ -280,7 +281,7 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              sale.customerName ?? 'Unknown Customer',
+                              sale.customerName ?? AppLocalizations.of(context)!.labelCustomer,
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -297,9 +298,9 @@ class _EggSaleScreenState extends State<EggSaleScreen> {
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.egg_rounded, size: 16, color: Colors.green),
+                               const Icon(Icons.egg_rounded, size: 16, color: Colors.green),
                               const SizedBox(width: 6),
-                              Text('${sale.quantity} eggs @ ${sale.unitPrice}'),
+                              Text('${sale.quantity} ${AppLocalizations.of(context)!.fieldGoodEggs.toLowerCase()} @ ${sale.unitPrice}'),
                             ],
                           ),
                           Text(

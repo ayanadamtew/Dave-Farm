@@ -4,12 +4,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import '../../core/config/app_config.dart';
 import '../dashboard/dashboard_screen.dart';
+import '../settings/settings_controller.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 const _storage = FlutterSecureStorage();
 const _jwtKey = 'dave_farm_jwt';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final SettingsController settingsController;
+
+  const LoginScreen({super.key, required this.settingsController});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -62,7 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _goToDashboard() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const DashboardScreen()),
+      MaterialPageRoute(
+        builder: (_) => DashboardScreen(
+          settingsController: widget.settingsController,
+        ),
+      ),
     );
   }
 
@@ -88,25 +96,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Color(0xFF2E7D32), size: 36),
                 ),
                 const SizedBox(width: 14),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Dave Farm',
-                        style: TextStyle(
+                    Text(AppLocalizations.of(context)!.appTitle,
+                        style: const TextStyle(
                             fontSize: 26, fontWeight: FontWeight.w800)),
-                    Text('Poultry Management',
+                    Text(AppLocalizations.of(context)!.labelPoultryManagement,
                         style:
-                            TextStyle(color: Colors.white54, fontSize: 13)),
+                            const TextStyle(color: Colors.white54, fontSize: 13)),
                   ],
                 ),
               ]),
               const SizedBox(height: 48),
-              const Text('Welcome back',
-                  style: TextStyle(
+               Text(AppLocalizations.of(context)!.labelWelcomeBack,
+                  style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
-              const Text('Sign in to your farm account',
-                  style: TextStyle(color: Colors.white54)),
+               Text(AppLocalizations.of(context)!.labelSignInSubtitle,
+                  style: const TextStyle(color: Colors.white54)),
               const SizedBox(height: 32),
 
               Form(
@@ -116,30 +124,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _emailCtrl,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        prefixIcon: Icon(Icons.email_rounded),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.fieldEmail,
+                        prefixIcon: const Icon(Icons.email_rounded),
                       ),
                       validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Required' : null,
+                          (v == null || v.isEmpty) ? AppLocalizations.of(context)!.errRequired : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _passCtrl,
                       obscureText: _obscure,
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: AppLocalizations.of(context)!.fieldPassword,
                         prefixIcon: const Icon(Icons.lock_rounded),
                         suffixIcon: IconButton(
                           icon: Icon(_obscure
-                              ? Icons.visibility_off_rounded
-                              : Icons.visibility_rounded),
+                               ? Icons.visibility_off_rounded
+                               : Icons.visibility_rounded),
                           onPressed: () =>
                               setState(() => _obscure = !_obscure),
                         ),
                       ),
                       validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Required' : null,
+                          (v == null || v.isEmpty) ? AppLocalizations.of(context)!.errRequired : null,
                     ),
                     const SizedBox(height: 8),
                     if (_errorMsg != null)
@@ -172,19 +180,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: CircularProgressIndicator(
                                   strokeWidth: 2, color: Colors.white))
                           : const Icon(Icons.login_rounded),
-                      label: Text(_loading ? 'Signing in…' : 'Login'),
+                      label: Text(_loading ? AppLocalizations.of(context)!.msgSigningIn : AppLocalizations.of(context)!.btnLogin),
                     ),
                     const SizedBox(height: 16),
                     // Offline-first hint
                     OutlinedButton.icon(
                       onPressed: () => Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                            builder: (_) => const DashboardScreen()),
+                          builder: (_) => DashboardScreen(
+                            settingsController: widget.settingsController,
+                          ),
+                        ),
                       ),
                       icon: const Icon(Icons.wifi_off_rounded,
                           color: Colors.white54),
-                      label: const Text('Continue Offline',
-                          style: TextStyle(color: Colors.white54)),
+                      label: Text(AppLocalizations.of(context)!.btnContinueOffline,
+                          style: const TextStyle(color: Colors.white54)),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 52),
                         side: const BorderSide(color: Colors.white24),

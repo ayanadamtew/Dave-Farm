@@ -40,7 +40,12 @@ class DailyLogDto(BaseModel):
     date: datetime
     good_eggs: int
     broken_eggs: int
+    damaged_eggs: int
     dead_birds: int
+    total_eggs: int
+
+    class Config:
+        from_attributes = True
 
 class EggSaleDto(BaseModel):
     id: str

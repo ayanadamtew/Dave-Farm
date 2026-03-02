@@ -90,6 +90,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldDeadBirds => 'Dead Birds';
 
   @override
+  String get fieldDamagedEggs => 'Damaged Eggs';
+
+  @override
   String get fieldCustomerName => 'Customer Name';
 
   @override
@@ -112,6 +115,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryLabor => 'Labor';
+
+  @override
+  String get categoryVaccines => 'Vaccines';
+
+  @override
+  String get categoryFeed => 'Feed';
 
   @override
   String get categoryHouseRent => 'House Rent';
@@ -211,4 +220,180 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get titleRegister => 'Create Account';
+
+  @override
+  String get titleSettings => 'Settings';
+
+  @override
+  String get sectionAccount => 'Account';
+
+  @override
+  String get sectionPreferences => 'Preferences';
+
+  @override
+  String get sectionDangerZone => 'Danger Zone';
+
+  @override
+  String get labelEditProfile => 'Edit Profile';
+
+  @override
+  String get labelEditProfileSubtitle => 'Update farm name and details';
+
+  @override
+  String get labelLanguage => 'Language';
+
+  @override
+  String get labelTheme => 'Theme';
+
+  @override
+  String get labelDarkMode => 'Dark Mode';
+
+  @override
+  String get labelLogOut => 'Log Out';
+
+  @override
+  String get labelLogOutSubtitle => 'Sign out of your account';
+
+  @override
+  String get labelSelectLanguage => 'Select Language';
+
+  @override
+  String get msgLogOutConfirm => 'Are you sure you want to log out?';
+
+  @override
+  String get labelTodayPerformance => 'Today\'s Performance';
+
+  @override
+  String get labelSyncNow => 'Sync Now';
+
+  @override
+  String get msgSyncComplete => 'Sync complete';
+
+  @override
+  String get labelReport => 'Report';
+
+  @override
+  String get labelAddExpense => 'Add Expense';
+
+  @override
+  String get labelAddSale => 'Add Sale';
+
+  @override
+  String get labelAddLog => 'Add Log';
+
+  @override
+  String get labelEmptyExpenses => 'No Expenses Logged';
+
+  @override
+  String get labelEmptyExpensesSub => 'Tap + to record an expense';
+
+  @override
+  String get labelEmptySales => 'No Sales Found';
+
+  @override
+  String get labelEmptySalesSub => 'Tap + to record an egg sale';
+
+  @override
+  String get labelEmptyLogs => 'No Daily Logs Yet';
+
+  @override
+  String get labelEmptyLogsSub => 'Tap + to record eggs and mortality';
+
+  @override
+  String get labelNewExpense => 'New Expense';
+
+  @override
+  String get labelNewSale => 'New Egg Sale';
+
+  @override
+  String get labelNewLog => 'New Daily Log';
+
+  @override
+  String get labelCategoryType => 'Category Type';
+
+  @override
+  String get labelSelectFlock => 'Select Flock';
+
+  @override
+  String get labelChooseFlock => 'Choose Flock';
+
+  @override
+  String get labelNoFlocksFound => 'No flocks found. Add a flock first.';
+
+  @override
+  String get labelEggCount => 'Egg Count';
+
+  @override
+  String get labelMortality => 'Mortality';
+
+  @override
+  String get labelMortalityHint =>
+      'Entering dead birds will automatically update the flock\'s current count.';
+
+  @override
+  String get labelCustomer => 'Customer';
+
+  @override
+  String get labelSaleDetails => 'Sale Details';
+
+  @override
+  String get labelTotalCalculated => 'Auto-calculated';
+
+  @override
+  String get labelGood => 'Good';
+
+  @override
+  String get labelBroken => 'Broken';
+
+  @override
+  String get labelDamaged => 'Damaged';
+
+  @override
+  String get labelTotal => 'Total';
+
+  @override
+  String get labelDead => 'Dead';
+
+  @override
+  String get labelAllGood => 'All Good';
+
+  @override
+  String get labelSelectDateRange => 'Select Date Range';
+
+  @override
+  String get btnGenerateShare => 'Generate & Share PDF';
+
+  @override
+  String get msgPdfSaveInfo =>
+      'The PDF will be saved locally and shared via your messaging apps.';
+
+  @override
+  String get errReportGeneral => 'Error generating report';
+
+  @override
+  String get labelPoultryManagement => 'Poultry Management';
+
+  @override
+  String get labelWelcomeBack => 'Welcome back';
+
+  @override
+  String get labelSignInSubtitle => 'Sign in to your farm account';
+
+  @override
+  String get btnContinueOffline => 'Continue Offline';
+
+  @override
+  String get msgSigningIn => 'Signing in…';
+
+  @override
+  String get labelLockedSubtitle => 'Dave Farm is locked';
+
+  @override
+  String get labelSetPinSubtitle => 'Choose a secure 4-digit PIN';
+
+  @override
+  String get labelConfirmPinSubtitle => 'Re-enter your PIN to confirm';
+
+  @override
+  String get errIncorrectPin => 'Incorrect PIN';
 }

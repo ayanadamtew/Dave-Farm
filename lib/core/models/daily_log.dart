@@ -6,8 +6,9 @@ class DailyLog {
   final DateTime date;
   final int goodEggs;
   final int brokenEggs;
+  final int damagedEggs;
   final int deadBirds;
-  final int isSynced; // 0 = false, 1 = true
+  final bool isSynced;
 
   const DailyLog({
     required this.id,
@@ -15,8 +16,9 @@ class DailyLog {
     required this.date,
     required this.goodEggs,
     required this.brokenEggs,
+    required this.damagedEggs,
     required this.deadBirds,
-    this.isSynced = 0,
+    this.isSynced = false,
   });
 
   /// Create a new DailyLog with an auto-generated UUIDv4.
@@ -25,6 +27,7 @@ class DailyLog {
     required DateTime date,
     required int goodEggs,
     required int brokenEggs,
+    required int damagedEggs,
     required int deadBirds,
   }) {
     return DailyLog(
@@ -33,8 +36,8 @@ class DailyLog {
       date: date,
       goodEggs: goodEggs,
       brokenEggs: brokenEggs,
+      damagedEggs: damagedEggs,
       deadBirds: deadBirds,
-      isSynced: 0,
     );
   }
 
@@ -45,8 +48,9 @@ class DailyLog {
       date: DateTime.parse(map['date'] as String),
       goodEggs: map['good_eggs'] as int,
       brokenEggs: map['broken_eggs'] as int,
+      damagedEggs: map['damaged_eggs'] ?? 0,
       deadBirds: map['dead_birds'] as int,
-      isSynced: map['is_synced'] as int,
+      isSynced: (map['is_synced'] as int) == 1,
     );
   }
 
@@ -57,8 +61,9 @@ class DailyLog {
       'date': date.toIso8601String(),
       'good_eggs': goodEggs,
       'broken_eggs': brokenEggs,
+      'damaged_eggs': damagedEggs,
       'dead_birds': deadBirds,
-      'is_synced': isSynced,
+      'is_synced': isSynced ? 1 : 0,
     };
   }
 
@@ -68,8 +73,9 @@ class DailyLog {
     DateTime? date,
     int? goodEggs,
     int? brokenEggs,
+    int? damagedEggs,
     int? deadBirds,
-    int? isSynced,
+    bool? isSynced,
   }) {
     return DailyLog(
       id: id ?? this.id,
@@ -77,6 +83,7 @@ class DailyLog {
       date: date ?? this.date,
       goodEggs: goodEggs ?? this.goodEggs,
       brokenEggs: brokenEggs ?? this.brokenEggs,
+      damagedEggs: damagedEggs ?? this.damagedEggs,
       deadBirds: deadBirds ?? this.deadBirds,
       isSynced: isSynced ?? this.isSynced,
     );

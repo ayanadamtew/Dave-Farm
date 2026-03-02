@@ -61,7 +61,7 @@ async def sync_daily_logs(items: List[DailyLogDto], current_user: User = Depends
     stmt = insert(DailyLog).values(values)
     stmt = stmt.on_conflict_do_update(
         index_elements=['id'],
-        set_={k: stmt.excluded[k] for k in ['good_eggs', 'broken_eggs', 'dead_birds']}
+        set_={k: stmt.excluded[k] for k in ['good_eggs', 'broken_eggs', 'damaged_eggs', 'dead_birds']}
     )
     await db.execute(stmt)
     await db.commit()

@@ -11,6 +11,7 @@ import '../../core/models/daily_log.dart';
 import '../../core/models/egg_sale.dart';
 import '../../core/models/expense.dart';
 import '../../shared/widgets/shared_widgets.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -48,7 +49,7 @@ class _ReportScreenState extends State<ReportScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error generating report: $e')),
+          SnackBar(content: Text('${AppLocalizations.of(context)!.errReportGeneral}: $e')),
         );
       }
     } finally {
@@ -173,7 +174,7 @@ class _ReportScreenState extends State<ReportScreen> {
               rows: expenses
                   .map((e) => [
                         dfmt.format(e.date),
-                        e.category.value,
+                        e.category,
                         e.amount.toStringAsFixed(2),
                         e.notes ?? '-',
                       ])
@@ -239,7 +240,7 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Generate Report')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.titleReport)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -249,22 +250,22 @@ class _ReportScreenState extends State<ReportScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    const Row(children: [
-                      Icon(Icons.date_range_rounded, color: Colors.white54),
-                      SizedBox(width: 8),
-                      Text('Select Date Range',
-                          style: TextStyle(
+                    Row(children: [
+                      const Icon(Icons.date_range_rounded, color: Colors.white54),
+                      const SizedBox(width: 8),
+                      Text(AppLocalizations.of(context)!.labelSelectDateRange,
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 15)),
                     ]),
                     const SizedBox(height: 12),
                     DatePickerTile(
-                      label: 'Start Date',
+                      label: AppLocalizations.of(context)!.labelStartDate,
                       date: _startDate,
                       onChanged: (d) => setState(() => _startDate = d),
                     ),
                     const Divider(height: 1),
                     DatePickerTile(
-                      label: 'End Date',
+                      label: AppLocalizations.of(context)!.labelEndDate,
                       date: _endDate,
                       onChanged: (d) => setState(() => _endDate = d),
                     ),
@@ -283,12 +284,12 @@ class _ReportScreenState extends State<ReportScreen> {
                           strokeWidth: 2, color: Colors.white))
                   : const Icon(Icons.picture_as_pdf_rounded),
               label:
-                  Text(_generating ? 'Generating…' : 'Generate & Share PDF'),
+                  Text(_generating ? AppLocalizations.of(context)!.msgSyncing : AppLocalizations.of(context)!.btnGenerateShare),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'The PDF will be saved locally and shared via your messaging apps.',
-              style: TextStyle(color: Colors.white38, fontSize: 12),
+            Text(
+              AppLocalizations.of(context)!.msgPdfSaveInfo,
+              style: const TextStyle(color: Colors.white38, fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ],

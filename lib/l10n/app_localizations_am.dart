@@ -87,7 +87,10 @@ class AppLocalizationsAm extends AppLocalizations {
   String get fieldBrokenEggs => 'የተሰበሩ እንቁላሎች';
 
   @override
-  String get fieldDeadBirds => 'የሞቱ ወፎች';
+  String get fieldDeadBirds => 'የሞቱ ዶሮዎች';
+
+  @override
+  String get fieldDamagedEggs => 'የተጎዱ እንቁላሎች';
 
   @override
   String get fieldCustomerName => 'የደንበኛ ስም';
@@ -111,10 +114,16 @@ class AppLocalizationsAm extends AppLocalizations {
   String get fieldNotes => 'ማስታወሻ (አማራጭ)';
 
   @override
-  String get categoryLabor => 'ሰራተኛ';
+  String get categoryLabor => 'የጉልበት ሥራ';
 
   @override
-  String get categoryHouseRent => 'ቤት ኪራይ';
+  String get categoryVaccines => 'ክትባቶች';
+
+  @override
+  String get categoryFeed => 'መኖ';
+
+  @override
+  String get categoryHouseRent => 'የቤት ኪራይ';
 
   @override
   String get labelLayingPercentage => 'የምርት %';
@@ -211,4 +220,180 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get titleRegister => 'መለያ ፍጠር';
+
+  @override
+  String get titleSettings => 'ቅንብሮች';
+
+  @override
+  String get sectionAccount => 'መለያ';
+
+  @override
+  String get sectionPreferences => 'ምርጫዎች';
+
+  @override
+  String get sectionDangerZone => 'አደገኛ ቀጠና';
+
+  @override
+  String get labelEditProfile => 'መገለጫ አርም';
+
+  @override
+  String get labelEditProfileSubtitle => 'የእርሻ ስም እና ዝርዝሮችን ያዘምኑ';
+
+  @override
+  String get labelLanguage => 'ቋንቋ';
+
+  @override
+  String get labelTheme => 'ገጽታ';
+
+  @override
+  String get labelDarkMode => 'የጨለማ ሁነታ';
+
+  @override
+  String get labelLogOut => 'ውጣ';
+
+  @override
+  String get labelLogOutSubtitle => 'ከመለያዎ ይውጡ';
+
+  @override
+  String get labelSelectLanguage => 'ቋንቋ ይምረጡ';
+
+  @override
+  String get msgLogOutConfirm => 'እርግጠኛ ነዎት መውጣት ይፈልጋሉ?';
+
+  @override
+  String get labelTodayPerformance => 'የዛሬ አፈጻጸም';
+
+  @override
+  String get labelSyncNow => 'አሁን አመሳስል';
+
+  @override
+  String get msgSyncComplete => 'ማመሳሰል ተጠናቅቋል';
+
+  @override
+  String get labelReport => 'ሪፖርት';
+
+  @override
+  String get labelAddExpense => 'ወጪ ጨምር';
+
+  @override
+  String get labelAddSale => 'Add Sale';
+
+  @override
+  String get labelAddLog => 'መዝገብ ጨምር';
+
+  @override
+  String get labelEmptyExpenses => 'ምንም የተመዘገበ ወጪ የለም';
+
+  @override
+  String get labelEmptyExpensesSub => 'ወጪ ለመመዝገብ + ይጫኑ';
+
+  @override
+  String get labelEmptySales => 'ምንም ሽያጭ አልተገኘም';
+
+  @override
+  String get labelEmptySalesSub => 'የእንቁላል ሽያጭ ለመመዝገብ + ይጫኑ';
+
+  @override
+  String get labelEmptyLogs => 'ምንም ዕለታዊ ምዝገባ የለም';
+
+  @override
+  String get labelEmptyLogsSub => 'እንቁላል እና ሞት ለመመዝገብ + ይጫኑ';
+
+  @override
+  String get labelNewExpense => 'አዲስ ወጪ';
+
+  @override
+  String get labelNewSale => 'አዲስ የእንቁላል ሽያጭ';
+
+  @override
+  String get labelNewLog => 'አዲስ ዕለታዊ ምዝገባ';
+
+  @override
+  String get labelCategoryType => 'የምድብ አይነት';
+
+  @override
+  String get labelSelectFlock => 'መንጋ ይምረጡ';
+
+  @override
+  String get labelChooseFlock => 'መንጋ ይምረጡ';
+
+  @override
+  String get labelNoFlocksFound => 'ምንም መንጋ አልተገኘም። መጀመሪያ መንጋ ይጨምሩ።';
+
+  @override
+  String get labelEggCount => 'የእንቁላል ብዛት';
+
+  @override
+  String get labelMortality => 'ሞት';
+
+  @override
+  String get labelMortalityHint =>
+      'የሞቱ ወፎችን ማስገባት የመንጋውን የአሁኑን ቁጥር ወዲያውኑ ያዘምናል።';
+
+  @override
+  String get labelCustomer => 'ደንበኛ';
+
+  @override
+  String get labelSaleDetails => 'የሽያጭ ዝርዝሮች';
+
+  @override
+  String get labelTotalCalculated => 'በራሱ የተሰላ';
+
+  @override
+  String get labelGood => 'ጥሩ';
+
+  @override
+  String get labelBroken => 'የተሰበረ';
+
+  @override
+  String get labelDamaged => 'የተጎዳ';
+
+  @override
+  String get labelTotal => 'ጠቅላላ';
+
+  @override
+  String get labelDead => 'የሞተ';
+
+  @override
+  String get labelAllGood => 'ሁሉም ጥሩ';
+
+  @override
+  String get labelSelectDateRange => 'የቀን ገደብ ይምረጡ';
+
+  @override
+  String get btnGenerateShare => 'PDF ፍጠር እና አጋራ';
+
+  @override
+  String get msgPdfSaveInfo =>
+      'PDF ፋይሉ በስልክዎ ላይ ይቀመጣል እንዲሁም በሌሎች አፕሊኬሽኖች ማጋራት ይችላሉ።';
+
+  @override
+  String get errReportGeneral => 'ሪፖርቱን መፍጠር አልተቻለም';
+
+  @override
+  String get labelPoultryManagement => 'የዶሮ እርባታ አስተዳደር';
+
+  @override
+  String get labelWelcomeBack => 'እንኳን ደህና መጡ';
+
+  @override
+  String get labelSignInSubtitle => 'ወደ እርሻዎ አካውንት ይግቡ';
+
+  @override
+  String get btnContinueOffline => 'ያለ ኢንተርኔት ይቀጥሉ';
+
+  @override
+  String get msgSigningIn => 'በመግባት ላይ…';
+
+  @override
+  String get labelLockedSubtitle => 'ዴቭ ፋርም ተቆልፏል';
+
+  @override
+  String get labelSetPinSubtitle => 'አራት አሃዝ ያለው የይለፍ ቃል ይምረጡ';
+
+  @override
+  String get labelConfirmPinSubtitle => 'ለማረጋገጥ ይድገሙ';
+
+  @override
+  String get errIncorrectPin => 'የተሳሳተ የይለፍ ቃል';
 }

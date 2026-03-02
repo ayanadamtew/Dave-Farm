@@ -262,6 +262,12 @@ abstract class AppLocalizations {
   /// **'Dead Birds'**
   String get fieldDeadBirds;
 
+  /// No description provided for @fieldDamagedEggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged Eggs'**
+  String get fieldDamagedEggs;
+
   /// No description provided for @fieldCustomerName.
   ///
   /// In en, this message translates to:
@@ -309,6 +315,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Labor'**
   String get categoryLabor;
+
+  /// No description provided for @categoryVaccines.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccines'**
+  String get categoryVaccines;
+
+  /// No description provided for @categoryFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get categoryFeed;
 
   /// No description provided for @categoryHouseRent.
   ///
@@ -507,6 +525,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create Account'**
   String get titleRegister;
+
+  /// No description provided for @titleSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get titleSettings;
+
+  /// No description provided for @sectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get sectionAccount;
+
+  /// No description provided for @sectionPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get sectionPreferences;
+
+  /// No description provided for @sectionDangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get sectionDangerZone;
+
+  /// No description provided for @labelEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get labelEditProfile;
+
+  /// No description provided for @labelEditProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update farm name and details'**
+  String get labelEditProfileSubtitle;
+
+  /// No description provided for @labelLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get labelLanguage;
+
+  /// No description provided for @labelTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get labelTheme;
+
+  /// No description provided for @labelDarkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get labelDarkMode;
+
+  /// No description provided for @labelLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get labelLogOut;
+
+  /// No description provided for @labelLogOutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of your account'**
+  String get labelLogOutSubtitle;
+
+  /// No description provided for @labelSelectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get labelSelectLanguage;
+
+  /// No description provided for @msgLogOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get msgLogOutConfirm;
+
+  /// No description provided for @labelTodayPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Performance'**
+  String get labelTodayPerformance;
+
+  /// No description provided for @labelSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get labelSyncNow;
+
+  /// No description provided for @msgSyncComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get msgSyncComplete;
+
+  /// No description provided for @labelReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get labelReport;
+
+  /// No description provided for @labelAddExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get labelAddExpense;
+
+  /// No description provided for @labelAddSale.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Sale'**
+  String get labelAddSale;
+
+  /// No description provided for @labelAddLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Log'**
+  String get labelAddLog;
+
+  /// No description provided for @labelEmptyExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'No Expenses Logged'**
+  String get labelEmptyExpenses;
+
+  /// No description provided for @labelEmptyExpensesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to record an expense'**
+  String get labelEmptyExpensesSub;
+
+  /// No description provided for @labelEmptySales.
+  ///
+  /// In en, this message translates to:
+  /// **'No Sales Found'**
+  String get labelEmptySales;
+
+  /// No description provided for @labelEmptySalesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to record an egg sale'**
+  String get labelEmptySalesSub;
+
+  /// No description provided for @labelEmptyLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'No Daily Logs Yet'**
+  String get labelEmptyLogs;
+
+  /// No description provided for @labelEmptyLogsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to record eggs and mortality'**
+  String get labelEmptyLogsSub;
+
+  /// No description provided for @labelNewExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'New Expense'**
+  String get labelNewExpense;
+
+  /// No description provided for @labelNewSale.
+  ///
+  /// In en, this message translates to:
+  /// **'New Egg Sale'**
+  String get labelNewSale;
+
+  /// No description provided for @labelNewLog.
+  ///
+  /// In en, this message translates to:
+  /// **'New Daily Log'**
+  String get labelNewLog;
+
+  /// No description provided for @labelCategoryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Category Type'**
+  String get labelCategoryType;
+
+  /// No description provided for @labelSelectFlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Flock'**
+  String get labelSelectFlock;
+
+  /// No description provided for @labelChooseFlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Flock'**
+  String get labelChooseFlock;
+
+  /// No description provided for @labelNoFlocksFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No flocks found. Add a flock first.'**
+  String get labelNoFlocksFound;
+
+  /// No description provided for @labelEggCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Egg Count'**
+  String get labelEggCount;
+
+  /// No description provided for @labelMortality.
+  ///
+  /// In en, this message translates to:
+  /// **'Mortality'**
+  String get labelMortality;
+
+  /// No description provided for @labelMortalityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entering dead birds will automatically update the flock\'s current count.'**
+  String get labelMortalityHint;
+
+  /// No description provided for @labelCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get labelCustomer;
+
+  /// No description provided for @labelSaleDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale Details'**
+  String get labelSaleDetails;
+
+  /// No description provided for @labelTotalCalculated.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-calculated'**
+  String get labelTotalCalculated;
+
+  /// No description provided for @labelGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get labelGood;
+
+  /// No description provided for @labelBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'Broken'**
+  String get labelBroken;
+
+  /// No description provided for @labelDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged'**
+  String get labelDamaged;
+
+  /// No description provided for @labelTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get labelTotal;
+
+  /// No description provided for @labelDead.
+  ///
+  /// In en, this message translates to:
+  /// **'Dead'**
+  String get labelDead;
+
+  /// No description provided for @labelAllGood.
+  ///
+  /// In en, this message translates to:
+  /// **'All Good'**
+  String get labelAllGood;
+
+  /// No description provided for @labelSelectDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date Range'**
+  String get labelSelectDateRange;
+
+  /// No description provided for @btnGenerateShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate & Share PDF'**
+  String get btnGenerateShare;
+
+  /// No description provided for @msgPdfSaveInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'The PDF will be saved locally and shared via your messaging apps.'**
+  String get msgPdfSaveInfo;
+
+  /// No description provided for @errReportGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating report'**
+  String get errReportGeneral;
+
+  /// No description provided for @labelPoultryManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Poultry Management'**
+  String get labelPoultryManagement;
+
+  /// No description provided for @labelWelcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get labelWelcomeBack;
+
+  /// No description provided for @labelSignInSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your farm account'**
+  String get labelSignInSubtitle;
+
+  /// No description provided for @btnContinueOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Offline'**
+  String get btnContinueOffline;
+
+  /// No description provided for @msgSigningIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in…'**
+  String get msgSigningIn;
+
+  /// No description provided for @labelLockedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dave Farm is locked'**
+  String get labelLockedSubtitle;
+
+  /// No description provided for @labelSetPinSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a secure 4-digit PIN'**
+  String get labelSetPinSubtitle;
+
+  /// No description provided for @labelConfirmPinSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your PIN to confirm'**
+  String get labelConfirmPinSubtitle;
+
+  /// No description provided for @errIncorrectPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect PIN'**
+  String get errIncorrectPin;
 }
 
 class _AppLocalizationsDelegate

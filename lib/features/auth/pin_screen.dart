@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 const _storage = FlutterSecureStorage();
 const _pinKey = 'dave_farm_pin';
@@ -110,11 +111,11 @@ class _PinScreenState extends State<PinScreen>
   Widget build(BuildContext context) {
     final current = (widget.isSetup && _confirming) ? _confirmPin : _pin;
     final title = widget.isSetup
-        ? (_confirming ? 'Confirm PIN' : 'Set 4-digit PIN')
-        : 'Enter PIN';
+        ? (_confirming ? AppLocalizations.of(context)!.labelConfirmPin : AppLocalizations.of(context)!.labelSetPinTitle)
+        : AppLocalizations.of(context)!.labelPinTitle;
     final subtitle = widget.isSetup
-        ? (_confirming ? 'Re-enter your PIN to confirm' : 'Choose a secure 4-digit PIN')
-        : 'Dave Farm is locked';
+        ? (_confirming ? AppLocalizations.of(context)!.labelConfirmPinSubtitle : AppLocalizations.of(context)!.labelSetPinSubtitle)
+        : AppLocalizations.of(context)!.labelLockedSubtitle;
 
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
@@ -166,7 +167,7 @@ class _PinScreenState extends State<PinScreen>
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: Text(
-                    widget.isSetup ? 'PINs do not match' : 'Incorrect PIN',
+                    widget.isSetup ? AppLocalizations.of(context)!.errPinMismatch : AppLocalizations.of(context)!.errIncorrectPin,
                     style: const TextStyle(color: Colors.redAccent),
                   ),
                 ),

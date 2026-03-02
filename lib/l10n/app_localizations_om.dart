@@ -90,6 +90,9 @@ class AppLocalizationsOm extends AppLocalizations {
   String get fieldDeadBirds => 'Lukkuu Du\'e';
 
   @override
+  String get fieldDamagedEggs => 'Foodaa Miidhame';
+
+  @override
   String get fieldCustomerName => 'Maqaa Maamilaa';
 
   @override
@@ -111,10 +114,16 @@ class AppLocalizationsOm extends AppLocalizations {
   String get fieldNotes => 'Yaadannoo (dirqii miti)';
 
   @override
-  String get categoryLabor => 'Hojjetaa';
+  String get categoryLabor => 'Hojii Humnaa';
 
   @override
-  String get categoryHouseRent => 'Kireeffannaa Mana';
+  String get categoryVaccines => 'Eebba';
+
+  @override
+  String get categoryFeed => 'Nyaata Lukkuu';
+
+  @override
+  String get categoryHouseRent => 'Kiree Manaa';
 
   @override
   String get labelLayingPercentage => 'Dhibbantaa Foodaa';
@@ -211,4 +220,182 @@ class AppLocalizationsOm extends AppLocalizations {
 
   @override
   String get titleRegister => 'Herrega Uumi';
+
+  @override
+  String get titleSettings => 'Sajantoota';
+
+  @override
+  String get sectionAccount => 'Herrega';
+
+  @override
+  String get sectionPreferences => 'Filannoowwan';
+
+  @override
+  String get sectionDangerZone => 'Naannoo Balaa';
+
+  @override
+  String get labelEditProfile => 'Eenyummeessaa Gulaali';
+
+  @override
+  String get labelEditProfileSubtitle =>
+      'Maqaa qulqullinaa fi bal\'ina isaa sabteessi';
+
+  @override
+  String get labelLanguage => 'Afaan';
+
+  @override
+  String get labelTheme => 'Bifa';
+
+  @override
+  String get labelDarkMode => 'Haala Dukkanaa';
+
+  @override
+  String get labelLogOut => 'Ba\'i';
+
+  @override
+  String get labelLogOutSubtitle => 'Herrega kee irraa ba\'i';
+
+  @override
+  String get labelSelectLanguage => 'Afaan Filadhu';
+
+  @override
+  String get msgLogOutConfirm => 'Dhuguma ba\'uu barbaadduu?';
+
+  @override
+  String get labelTodayPerformance => 'Raawwii Har\'aa';
+
+  @override
+  String get labelSyncNow => 'Amma Wixinee';
+
+  @override
+  String get msgSyncComplete => 'Wixineen xumurameera';
+
+  @override
+  String get labelReport => 'Gabaasa';
+
+  @override
+  String get labelAddExpense => 'Baasii Dabali';
+
+  @override
+  String get labelAddSale => 'Gurguurtaa Dabali';
+
+  @override
+  String get labelAddLog => 'Galmee Dabali';
+
+  @override
+  String get labelEmptyExpenses => 'Baasii Galmeeffame Hin Jiru';
+
+  @override
+  String get labelEmptyExpensesSub => 'Baasii galmeessuuf + tuqi';
+
+  @override
+  String get labelEmptySales => 'Gurguurtaan Argame Hin Jiru';
+
+  @override
+  String get labelEmptySalesSub => 'Gurguurtaa foodaa galmeessuuf + tuqi';
+
+  @override
+  String get labelEmptyLogs => 'Galmeen Guyyaa Hin Jiru';
+
+  @override
+  String get labelEmptyLogsSub => 'Foodaa fi du\'a galmeessuuf + tuqi';
+
+  @override
+  String get labelNewExpense => 'Baasii Haaraa';
+
+  @override
+  String get labelNewSale => 'Gurguurtaa Foodaa Haaraa';
+
+  @override
+  String get labelNewLog => 'Galmee Guyyaa Haaraa';
+
+  @override
+  String get labelCategoryType => 'Gosa Ramaddii';
+
+  @override
+  String get labelSelectFlock => 'Kuusa Filadhu';
+
+  @override
+  String get labelChooseFlock => 'Kuusa Filadhu';
+
+  @override
+  String get labelNoFlocksFound =>
+      'Kuusa argame hin jiru. Jalqaba kuusa dabali.';
+
+  @override
+  String get labelEggCount => 'Lakkoofsa Foodaa';
+
+  @override
+  String get labelMortality => 'Du\'a';
+
+  @override
+  String get labelMortalityHint =>
+      'Lukkuu du\'e galchuun lakkoofsa kuusaa ammaa yeruma sana sabteessa.';
+
+  @override
+  String get labelCustomer => 'Maamila';
+
+  @override
+  String get labelSaleDetails => 'Bal\'ina Gurguurtaa';
+
+  @override
+  String get labelTotalCalculated => 'Ofiin-kan-shallagame';
+
+  @override
+  String get labelGood => 'Gaarii';
+
+  @override
+  String get labelBroken => 'Cabsame';
+
+  @override
+  String get labelDamaged => 'Miidhame';
+
+  @override
+  String get labelTotal => 'Waliigalaa';
+
+  @override
+  String get labelDead => 'Du\'e';
+
+  @override
+  String get labelAllGood => 'Hundi Gaariidha';
+
+  @override
+  String get labelSelectDateRange => 'Yeroo Filadhu';
+
+  @override
+  String get btnGenerateShare => 'PDF Uumi & Hiru';
+
+  @override
+  String get msgPdfSaveInfo =>
+      'PDF\'n bilbila kee irratti ni kuufama akkasumas karaa appootii biroo hiramuu danda\'a.';
+
+  @override
+  String get errReportGeneral => 'Gabaasa uumuu irratti dogoggorri uumameera';
+
+  @override
+  String get labelPoultryManagement => 'Bulchiinsa Lukkuu';
+
+  @override
+  String get labelWelcomeBack => 'Baga Nagaan Dhuftan';
+
+  @override
+  String get labelSignInSubtitle => 'Gara herrega keetti seeni';
+
+  @override
+  String get btnContinueOffline => 'Intarneeta malee itti fufi';
+
+  @override
+  String get msgSigningIn => 'Seenaa jira…';
+
+  @override
+  String get labelLockedSubtitle => 'Dave Farm cufameera';
+
+  @override
+  String get labelSetPinSubtitle => 'PIN lakkoofsa 4 filadhu';
+
+  @override
+  String get labelConfirmPinSubtitle => 'Mirkaneessuuf PIN galchi';
+
+  @override
+  String get errIncorrectPin => 'PIN dogoggora';
 }

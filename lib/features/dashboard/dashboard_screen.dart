@@ -1,17 +1,21 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../settings/settings_controller.dart';
 import '../../core/database/database_helper.dart';
 import '../../core/sync/sync_engine.dart';
 import '../../shared/widgets/shared_widgets.dart';
 import '../expenses/expense_screen.dart';
-import '../flocks/flocks_screen.dart';
+import '../flocks/widgets/flock_form_sheet.dart';
 import '../logs/daily_log_screen.dart';
 import '../reports/report_screen.dart';
 import '../sales/egg_sale_screen.dart';
 import '../settings/settings_screen.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  final SettingsController settingsController;
+
+  const DashboardScreen({super.key, required this.settingsController});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -20,18 +24,18 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    _HomeTab(),
-    FlocksScreen(),
-    DailyLogScreen(),
-    EggSaleScreen(),
-    ExpenseScreen(),
-  ];
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     SyncEngine.instance.start();
+    _pages = [
+      _HomeTab(settingsController: widget.settingsController),
+      const DailyLogScreen(),
+      const EggSaleScreen(),
+      const ExpenseScreen(),
+    ];
   }
 
   @override
@@ -47,17 +51,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-              icon: Icon(Icons.dashboard_rounded), label: 'Dashboard'),
+              icon: const Icon(Icons.dashboard_rounded),
+              label: AppLocalizations.of(context)!.navDashboard),
           NavigationDestination(
-              icon: Icon(Icons.egg_rounded), label: 'Flocks'),
+              icon: const Icon(Icons.edit_note_rounded),
+              label: AppLocalizations.of(context)!.navLogs),
           NavigationDestination(
-              icon: Icon(Icons.edit_note_rounded), label: 'Daily Log'),
+              icon: const Icon(Icons.sell_rounded),
+              label: AppLocalizations.of(context)!.navSales),
           NavigationDestination(
-              icon: Icon(Icons.sell_rounded), label: 'Sales'),
-          NavigationDestination(
-              icon: Icon(Icons.receipt_long_rounded), label: 'Expenses'),
+              icon: const Icon(Icons.receipt_long_rounded),
+              label: AppLocalizations.of(context)!.navExpenses),
         ],
       ),
       floatingActionButton: _currentIndex == 0
@@ -67,7 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 MaterialPageRoute(builder: (_) => const ReportScreen()),
               ),
               icon: const Icon(Icons.picture_as_pdf_rounded),
-              label: const Text('Report'),
+              label: Text(AppLocalizations.of(context)!.labelReport),
             )
           : null,
     );
@@ -79,7 +85,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _HomeTab extends StatefulWidget {
-  const _HomeTab();
+  final SettingsController settingsController;
+  const _HomeTab({required this.settingsController});
 
   @override
   State<_HomeTab> createState() => _HomeTabState();
@@ -124,8 +131,8 @@ class _HomeTabState extends State<_HomeTab> {
       setState(() {
         _todayEggs = results[0] as int;
         _totalBirds = results[1] as int;
-        _netProfit = results[2] as double;
-        _costPerEgg = results[3] as double;
+        _netProfit = (results[2] as num).toDouble();
+        _costPerEgg = (results[3] as num).toDouble();
         _eggTrend = results[4] as List<Map<String, dynamic>>;
         _profitTrend = results[5] as List<Map<String, dynamic>>;
         _layingPct = _totalBirds > 0 ? (_todayEggs / _totalBirds * 100) : 0;
@@ -134,30 +141,53 @@ class _HomeTabState extends State<_HomeTab> {
     }
   }
 
+  void _openAddFlock() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFF1E1E1E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => FlockFormSheet(
+        onSaved: _load,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dave Farm'),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           IconButton(
+            icon: const Icon(Icons.add_circle_outline_rounded),
+            tooltip: AppLocalizations.of(context)!.titleAddFlock,
+            onPressed: _openAddFlock,
+          ),
+          IconButton(
             icon: const Icon(Icons.sync_rounded),
-            tooltip: 'Sync Now',
+            tooltip: AppLocalizations.of(context)!.labelSyncNow,
             onPressed: () async {
               await SyncEngine.instance.syncNow();
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Sync complete')));
+                  SnackBar(content: Text(AppLocalizations.of(context)!.msgSyncComplete)));
               }
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
-            tooltip: 'Settings',
+            tooltip: AppLocalizations.of(context)!.titleSettings,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                MaterialPageRoute(
+                  builder: (_) => SettingsScreen(
+                    controller: widget.settingsController,
+                  ),
+                ),
               );
             },
           ),
@@ -167,25 +197,27 @@ class _HomeTabState extends State<_HomeTab> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _load,
-              child: ListView(
+              child: _totalBirds == 0 && !_loading
+                ? _EmptyFlockState(onAdd: _openAddFlock)
+                : ListView(
                 padding: const EdgeInsets.only(bottom: 100),
                 children: [
-                  _SectionHeader('Today\'s Performance'),
+                  _SectionHeader(AppLocalizations.of(context)!.labelTodayPerformance),
                   MetricCard(
-                    label: 'Laying Percentage',
+                    label: AppLocalizations.of(context)!.labelLayingPercentage,
                     value: '${_layingPct.toStringAsFixed(1)}%',
                     icon: Icons.percent_rounded,
                     color: const Color(0xFF43A047),
-                    subtitle: '$_todayEggs eggs / $_totalBirds birds',
+                    subtitle: '$_todayEggs ${AppLocalizations.of(context)!.fieldGoodEggs.toLowerCase()} / $_totalBirds ${AppLocalizations.of(context)!.fieldDeadBirds.split(' ')[1].toLowerCase()}',
                   ),
                   MetricCard(
-                    label: 'Cost per Egg (30d)',
+                    label: AppLocalizations.of(context)!.labelCostPerEgg,
                     value: 'ETB ${_costPerEgg.toStringAsFixed(2)}',
                     icon: Icons.calculate_rounded,
                     color: const Color(0xFFFFA000),
                   ),
                   MetricCard(
-                    label: 'Net Profit (30d)',
+                    label: AppLocalizations.of(context)!.labelNetProfit,
                     value: 'ETB ${_netProfit.toStringAsFixed(2)}',
                     icon: Icons.trending_up_rounded,
                     color: _netProfit >= 0
@@ -193,7 +225,7 @@ class _HomeTabState extends State<_HomeTab> {
                         : Colors.redAccent,
                   ),
                   MetricCard(
-                    label: 'Total Birds',
+                    label: AppLocalizations.of(context)!.labelCurrentBirds,
                     value: '$_totalBirds',
                     icon: Icons.pets_rounded,
                     color: Colors.white70,
@@ -202,13 +234,13 @@ class _HomeTabState extends State<_HomeTab> {
 
                   // Egg production chart
                   if (_eggTrend.isNotEmpty) ...[
-                    _SectionHeader('Egg Production (30 days)'),
+                    _SectionHeader(AppLocalizations.of(context)!.labelEggProduction),
                     _EggLineChart(data: _eggTrend),
                   ],
 
                   // Net profit chart
                   if (_profitTrend.isNotEmpty) ...[
-                    _SectionHeader('Net Profit (30 days)'),
+                    _SectionHeader(AppLocalizations.of(context)!.labelNetProfitChart),
                     _ProfitBarChart(data: _profitTrend),
                   ],
                 ],
@@ -232,6 +264,49 @@ class _SectionHeader extends StatelessWidget {
               fontWeight: FontWeight.w600,
               color: Colors.white60,
               letterSpacing: 0.8)),
+    );
+  }
+}
+
+class _EmptyFlockState extends StatelessWidget {
+  const _EmptyFlockState({required this.onAdd});
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.05),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.egg_outlined, size: 80, color: Colors.white24),
+            ),
+            const SizedBox(height: 24),
+            Text(AppLocalizations.of(context)!.labelTotalFlocks.replaceAll('Active', 'No'),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+            const SizedBox(height: 12),
+            const Text('To see analytics, you first need to register your flock.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white54, height: 1.5)),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: onAdd,
+              icon: const Icon(Icons.add),
+              label: Text(AppLocalizations.of(context)!.titleAddFlock),
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 56),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -41,11 +41,16 @@ class DailyLog(Base):
     date = Column(DateTime, nullable=False)
     good_eggs = Column(Integer, default=0)
     broken_eggs = Column(Integer, default=0)
+    damaged_eggs = Column(Integer, default=0)
     dead_birds = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     owner = relationship("User", back_populates="daily_logs")
     flock = relationship("Flock", back_populates="daily_logs")
+
+    @property
+    def total_eggs(self) -> int:
+        return (self.good_eggs or 0) + (self.broken_eggs or 0) + (self.damaged_eggs or 0)
 
 class EggSale(Base):
     __tablename__ = "egg_sales"

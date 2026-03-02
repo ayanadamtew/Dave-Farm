@@ -4,6 +4,7 @@ import '../../core/models/daily_log.dart';
 import '../../core/models/flock.dart';
 import '../../shared/widgets/shared_widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:dave_farm/l10n/app_localizations.dart';
 
 class DailyLogScreen extends StatefulWidget {
   const DailyLogScreen({super.key});
@@ -16,6 +17,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   final _formKey = GlobalKey<FormState>();
   final _goodEggsCtrl = TextEditingController();
   final _brokenEggsCtrl = TextEditingController();
+  final _damagedEggsCtrl = TextEditingController();
   final _deadBirdsCtrl = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
@@ -55,7 +57,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedFlock == null) {
-      _showSnack('Please select a flock');
+      _showSnack(AppLocalizations.of(context)!.labelChooseFlock);
       return;
     }
     setState(() => _isSaving = true);
@@ -65,6 +67,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       date: _selectedDate,
       goodEggs: int.tryParse(_goodEggsCtrl.text) ?? 0,
       brokenEggs: int.tryParse(_brokenEggsCtrl.text) ?? 0,
+      damagedEggs: int.tryParse(_damagedEggsCtrl.text) ?? 0,
       deadBirds: int.tryParse(_deadBirdsCtrl.text) ?? 0,
     );
 
@@ -72,7 +75,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
 
     if (mounted) {
       setState(() => _isSaving = false);
-      _showSnack('Daily log saved!');
+      _showSnack(AppLocalizations.of(context)!.msgSaved);
       _resetForm();
       Navigator.pop(context); // Close the modal sheet
       _loadData(); // Refresh the list
@@ -82,6 +85,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   void _resetForm() {
     _goodEggsCtrl.clear();
     _brokenEggsCtrl.clear();
+    _damagedEggsCtrl.clear();
     _deadBirdsCtrl.clear();
     setState(() {
       _selectedDate = DateTime.now();
@@ -98,6 +102,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   void dispose() {
     _goodEggsCtrl.dispose();
     _brokenEggsCtrl.dispose();
+    _damagedEggsCtrl.dispose();
     _deadBirdsCtrl.dispose();
     super.dispose();
   }
@@ -128,14 +133,14 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'New Daily Log',
+                      AppLocalizations.of(context)!.titleDailyLog,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 24),
                     // Flock selector
-                    const _SectionLabel('Select Flock'),
+                    _SectionLabel(AppLocalizations.of(context)!.labelSelectFlock),
                     const SizedBox(height: 8),
                     if (_flocks.isEmpty)
                       Container(
@@ -148,7 +153,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                         child: const Row(children: [
                           Icon(Icons.warning_amber_rounded, color: Colors.amber),
                           SizedBox(width: 8),
-                          Text('No flocks found. Add a flock first.'),
+                          Expanded(child: Text('No flocks found. Add a flock first.')),
                         ]),
                       )
                     else
@@ -158,7 +163,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.group_rounded),
                         ),
-                        hint: const Text('Choose flock'),
+                        hint: Text(AppLocalizations.of(context)!.labelChooseFlock),
                         items: _flocks
                             .map((f) => DropdownMenuItem(
                                   value: f,
@@ -173,21 +178,21 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                     const SizedBox(height: 20),
       
                     // Date picker
-                    const _SectionLabel('Date'),
+                    _SectionLabel(AppLocalizations.of(context)!.fieldDate),
                     DatePickerTile(
-                      label: 'Production Date',
+                      label: AppLocalizations.of(context)!.fieldDate,
                       date: _selectedDate,
                       onChanged: (d) => setSheetState(() => _selectedDate = d),
                     ),
                     const Divider(height: 32),
       
                     // Egg counts
-                    const _SectionLabel('Egg Count'),
+                    _SectionLabel(AppLocalizations.of(context)!.labelEggCount),
                     const SizedBox(height: 12),
                     Row(children: [
                       Expanded(
                         child: NumpadField(
-                          label: 'Good Eggs',
+                          label: AppLocalizations.of(context)!.labelGood,
                           controller: _goodEggsCtrl,
                           prefixIcon: Icons.egg_rounded,
                         ),
@@ -195,19 +200,25 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: NumpadField(
-                          label: 'Broken',
+                          label: AppLocalizations.of(context)!.labelBroken,
                           controller: _brokenEggsCtrl,
                           prefixIcon: Icons.egg_alt_rounded,
                         ),
                       ),
                     ]),
+                    const SizedBox(height: 12),
+                    NumpadField(
+                      label: AppLocalizations.of(context)!.fieldDamagedEggs,
+                      controller: _damagedEggsCtrl,
+                      prefixIcon: Icons.heart_broken_rounded,
+                    ),
                     const SizedBox(height: 20),
       
                     // Mortality
-                    const _SectionLabel('Mortality'),
+                    _SectionLabel(AppLocalizations.of(context)!.labelMortality),
                     const SizedBox(height: 12),
                     NumpadField(
-                      label: 'Dead Birds',
+                      label: AppLocalizations.of(context)!.fieldDeadBirds,
                       controller: _deadBirdsCtrl,
                       prefixIcon: Icons.warning_rounded,
                     ),
@@ -219,13 +230,13 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                         color: Colors.amber.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Row(children: [
-                        Icon(Icons.info_outline, size: 14, color: Colors.amber),
-                        SizedBox(width: 6),
+                      child: Row(children: [
+                        const Icon(Icons.info_outline, size: 14, color: Colors.amber),
+                        const SizedBox(width: 6),
                         Expanded(
                           child: Text(
-                            'Entering dead birds will automatically update the flock\'s current count.',
-                            style: TextStyle(fontSize: 11, color: Colors.amber),
+                            AppLocalizations.of(context)!.labelMortalityHint,
+                            style: const TextStyle(fontSize: 11, color: Colors.amber),
                           ),
                         ),
                       ]),
@@ -253,7 +264,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                                     strokeWidth: 2, color: Colors.white),
                               )
                             : const Icon(Icons.save_rounded),
-                        label: Text(_isSaving ? 'Saving…' : 'Save Daily Log'),
+                        label: Text(_isSaving ? AppLocalizations.of(context)!.msgSyncing : AppLocalizations.of(context)!.btnSave),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -270,11 +281,11 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daily Logs')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.navLogs)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openAddLogSheet,
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Log'),
+        label: Text(AppLocalizations.of(context)!.labelAddLog),
       ),
       body: _logs.isEmpty 
         ? Center(
@@ -284,12 +295,12 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                 Icon(Icons.history_rounded, size: 80, color: Colors.grey.withOpacity(0.5)),
                 const SizedBox(height: 16),
                 Text(
-                  'No Daily Logs Yet',
+                  AppLocalizations.of(context)!.labelEmptyLogs,
                   style: TextStyle(color: Colors.grey.shade400, fontSize: 18),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Tap + to record eggs and mortality',
+                  AppLocalizations.of(context)!.labelEmptyLogsSub,
                   style: TextStyle(color: Colors.grey.shade500),
                 ),
               ],
@@ -301,59 +312,124 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             itemBuilder: (context, index) {
               final log = _logs[index];
               final flockName = _flockNames[log.flockId] ?? 'Unknown Flock';
-              final totalEggs = log.goodEggs + log.brokenEggs;
+              final totalEggs = log.goodEggs + log.brokenEggs + log.damagedEggs;
               
               return Card(
-                margin: const EdgeInsets.only(bottom: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            flockName,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          Text(
-                            DateFormat('MMM d, yyyy').format(log.date),
-                            style: TextStyle(color: Colors.grey.shade400, fontSize: 13),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _StatChip(
-                            icon: Icons.egg_rounded, 
-                            label: '${log.goodEggs} Good',
-                            color: Colors.green,
-                          ),
-                          if (log.brokenEggs > 0)
-                            _StatChip(
-                              icon: Icons.egg_alt_rounded, 
-                              label: '${log.brokenEggs} Broken',
-                              color: Colors.orange,
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                elevation: 0,
+                color: Theme.of(context).cardColor.withOpacity(0.5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white.withOpacity(0.05),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  flockName,
+                                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  DateFormat('EEEE, MMM d, yyyy').format(log.date),
+                                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                                ),
+                              ],
                             ),
-                          if (log.deadBirds > 0)
-                            _StatChip(
-                              icon: Icons.warning_rounded, 
-                              label: '${log.deadBirds} Dead',
-                              color: Colors.red,
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.egg_rounded, size: 14, color: Theme.of(context).primaryColor),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    '$totalEggs ${AppLocalizations.of(context)!.labelTotal}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          if (log.brokenEggs == 0 && log.deadBirds == 0)
-                            _StatChip(
-                              icon: Icons.check_circle_rounded, 
-                              label: 'All Good',
-                              color: Colors.blue,
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          child: Divider(height: 1, thickness: 0.5, color: Colors.white10),
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _LogStatItem(
+                                    label: AppLocalizations.of(context)!.labelGood,
+                                    value: '${log.goodEggs}',
+                                    icon: Icons.check_circle_outline_rounded,
+                                    color: Colors.greenAccent,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _LogStatItem(
+                                    label: AppLocalizations.of(context)!.labelBroken,
+                                    value: '${log.brokenEggs}',
+                                    icon: Icons.egg_alt_rounded,
+                                    color: Colors.orangeAccent,
+                                  ),
+                                ),
+                              ],
                             ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(height: 12),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _LogStatItem(
+                                    label: AppLocalizations.of(context)!.labelDamaged,
+                                    value: '${log.damagedEggs}',
+                                    icon: Icons.heart_broken_rounded,
+                                    color: Colors.deepOrangeAccent,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _LogStatItem(
+                                    label: AppLocalizations.of(context)!.labelDead,
+                                    value: '${log.deadBirds}',
+                                    icon: Icons.warning_amber_rounded,
+                                    color: log.deadBirds > 0 ? Colors.redAccent : Colors.white24,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -363,36 +439,54 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   }
 }
 
-class _StatChip extends StatelessWidget {
-  const _StatChip({
-    required this.icon,
+class _LogStatItem extends StatelessWidget {
+  const _LogStatItem({
     required this.label,
+    required this.value,
+    required this.icon,
     required this.color,
   });
-  
-  final IconData icon;
+
   final String label;
+  final String value;
+  final IconData icon;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(8),
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.1)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 14, color: color),
-          const SizedBox(width: 4),
+          Row(
+            children: [
+              Icon(icon, size: 12, color: color),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: color.withOpacity(0.7),
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
           Text(
-            label, 
+            value,
             style: TextStyle(
-              fontSize: 12, 
-              fontWeight: FontWeight.w600, 
-              color: color
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: color,
             ),
           ),
         ],
