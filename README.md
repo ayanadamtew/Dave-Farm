@@ -1,17 +1,47 @@
-# dave_farm
+# Dave Farm 🐔
 
-A new Flutter project.
+Dave Farm is a professional, **offline-first** poultry farm management application built with Flutter. It helps farmers track daily egg production, sales, expenses, and flock health with ease, even in areas with limited internet connectivity.
 
-## Getting Started
+![App Logo](assets/images/app_icon.jpg)
 
-This project is a starting point for a Flutter application.
+## ✨ Key Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Offline-First Architecture**: Log data anytime, anywhere. Sync with the cloud when you have a connection.
+- **Comprehensive Tracking**:
+    - **Daily Logs**: Monitor good, broken, and damaged eggs, plus mortality rates.
+    - **Inventory Management**: Track feed consumption and medicine usage.
+    - **Finances**: Log egg sales and farm expenses (Vaccines, Vitamins, Feed, etc.).
+- **Rich Analytics**: Visual charts for production trends and net profit summaries.
+- **Multilingual Support**: Available in **English**, **Amharic**, and **Oromo**.
+- **Secure Access**: PIN-based local lock and JWT-based cloud authentication.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 🛠 Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Mobile**: Flutter (Dart)
+- **Local DB**: SQLite (via `sqflite`)
+- **Backend**: FastAPI (Python)
+- **Database**: PostgreSQL (via SQLAlchemy & AsyncPG)
+- **State Management**: Listenable/ChangeNotifier (Settings)
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK (^3.11.0)
+- Python (3.9+)
+- PostgreSQL (Local or Cloud)
+
+### Mobile Setup
+1. Clone the repository.
+2. Run `flutter pub get`.
+3. Update `lib/core/config/app_config.dart` with your Backend URL.
+4. Run `flutter run`.
+
+### Backend Setup
+1. Navigate to the `backend/` directory.
+2. Create a virtual environment: `python -m venv venv`.
+3. Install dependencies: `pip install -r requirements.txt`.
+4. Configure `.env` with your `DATABASE_URL`.
+5. Run the server: `uvicorn app.main:app --reload`.
+
+## 📄 License
+This project is for private use by Dave Farm.

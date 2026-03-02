@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Dave Farm API"
+    PROJECT_NAME: str = "Dave Farm"
     DATABASE_URL: str = "postgresql+asyncpg://dave:davepassword@localhost:5432/davefarm"
     SECRET_KEY: str = "your-super-secret-key-change-in-production"
     ALGORITHM: str = "HS256"
