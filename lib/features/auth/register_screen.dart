@@ -48,11 +48,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Uri.parse('${AppConfig.baseUrl}/api/v1/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': _emailCtrl.text.trim(),
           'password': _passCtrl.text,
           'farm_name': _farmCtrl.text.trim(),
         }),
-      ).timeout(const Duration(seconds: 15));
+      ).timeout(const Duration(seconds: 30));
 
       if (res.statusCode == 201) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;

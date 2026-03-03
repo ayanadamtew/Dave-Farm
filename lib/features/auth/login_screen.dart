@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'email': _emailCtrl.text.trim(),
           'password': _passCtrl.text,
         }),
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 30));
 
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;
