@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../core/config/app_config.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../settings/settings_controller.dart';
+import 'register_screen.dart';
 import 'package:dave_farm/l10n/app_localizations.dart';
 
 const _storage = FlutterSecureStorage();
@@ -206,6 +207,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         side: const BorderSide(color: Colors.white24),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14)),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => RegisterScreen(
+                              settingsController: widget.settingsController,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)!.titleRegister,
+                        style: const TextStyle(
+                          color: Color(0xFF2E7D32),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

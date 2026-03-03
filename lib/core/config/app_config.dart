@@ -8,5 +8,5 @@ class AppConfig {
   /// 
   /// For production:
   /// - 'https://api.yourdomain.com'
-  static const String baseUrl = 'http://10.22.75.125:8000'; // Set to Local PC IP for Physical Device
+  static const String baseUrl = 'https://dave-farm-backend.onrender.com'; // Set to Local PC IP for Physical Device
 }
